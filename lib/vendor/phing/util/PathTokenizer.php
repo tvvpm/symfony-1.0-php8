@@ -179,7 +179,7 @@ class PathTokenizer {
 
 
 
-        if (strlen($token) === 1 && Character::isLetter()
+        if (strlen($token) === 1 && Character::isLetter($token[0])
 
                                 && $this->dosStyleFilesystem
 
