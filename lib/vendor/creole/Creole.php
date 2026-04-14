@@ -80,7 +80,7 @@ class Creole {
      * @see registerDriver()
      * @var array Hash mapping phptype => driver class (in dot-path notation, e.g. 'mysql' => 'creole.drivers.mysql.MySQLConnection').
      */
-    private static $driverMap = array(  'mysql' => 'creole.drivers.mysql.MySQLConnection',
+    private static $driverMap = array(  'mysql' => 'creole.drivers.mysqli.MySQLiConnection',
                                         'mysqli' => 'creole.drivers.mysqli.MySQLiConnection',
                                         'pgsql' => 'creole.drivers.pgsql.PgSQLConnection',
                                         'sqlite' => 'creole.drivers.sqlite.SQLiteConnection',
