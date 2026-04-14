@@ -212,8 +212,17 @@ abstract class sfWebController extends sfController
   {
     $response = $this->getContext()->getResponse();
 
-    // redirect
+    //Tomeu - Mantemos custom headers
+    $custom_headers = [];
+    foreach($response->getHttpHeaders() as $name => $value)
+      if (stripos($name, 'X-') === 0)
+        $custom_headers[$name] = $value;
+
     $response->clearHttpHeaders();
+    foreach($custom_headers as $name => $value)
+      $response->setHttpHeader($name, $value);
+
+    // redirect
     $response->setStatusCode($statusCode);
     $response->setHttpHeader('Location', $url);
     $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlentities($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
