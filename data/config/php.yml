@@ -1,0 +1,5 @@
+set:
+  log_errors:                  on
+
+warn:
+  session.auto_start:          off
