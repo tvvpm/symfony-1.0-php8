@@ -145,7 +145,6 @@ class sfCacheFilter extends sfFilter
       // FIXME: these headers are set by PHP sessions (see session_cache_limiter())
       $this->response->setHttpHeader('Cache-Control', null);
       $this->response->setHttpHeader('Expires', null);
-      $this->response->setHttpHeader('Pragma', null);
     }
 
     // Etag support

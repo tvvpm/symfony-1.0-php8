@@ -277,6 +277,9 @@ class sfWebResponse extends sfResponse
       $this->getContext()->getLogger()->info('{sfResponse} send status "'.$status.'"');
     }
 
+    // remove legacy HTTP/1.0 Pragma header injected by PHP session_cache_limiter()
+    header_remove('Pragma');
+
     // headers
     foreach ($headers as $name => $value)
     {
