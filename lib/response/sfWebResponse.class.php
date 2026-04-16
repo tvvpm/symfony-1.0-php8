@@ -397,7 +397,7 @@ class sfWebResponse extends sfResponse
     $currentHeaders = array();
     if ($cacheControl)
     {
-      foreach (explode('/\s*,\s*/', $cacheControl) as $tmp)
+      foreach (preg_split('/\s*,\s*/', $cacheControl) as $tmp)
       {
         $tmp = explode('=', $tmp);
         $currentHeaders[$tmp[0]] = isset($tmp[1]) ? $tmp[1] : null;
