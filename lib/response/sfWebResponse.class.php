@@ -187,13 +187,18 @@ class sfWebResponse extends sfResponse
   {
     $name = $this->normalizeHeaderName($name);
 
+    if (is_null($value))
+    {
+      $this->getParameterHolder()->remove($name, 'symfony/response/http/headers');
+      return;
+    }
+
     if ('Content-Type' == $name)
     {
       if ($replace || !$this->getHttpHeader('Content-Type', null))
       {
         $this->setContentType($value);
       }
-
       return;
     }
 
@@ -276,9 +281,6 @@ class sfWebResponse extends sfResponse
     {
       $this->getContext()->getLogger()->info('{sfResponse} send status "'.$status.'"');
     }
-
-    // remove legacy HTTP/1.0 Pragma header injected by PHP session_cache_limiter()
-    header_remove('Pragma');
 
     // headers
     foreach ($headers as $name => $value)

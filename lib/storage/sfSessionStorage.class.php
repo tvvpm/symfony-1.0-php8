@@ -73,6 +73,8 @@ class sfSessionStorage extends sfStorage
 
     if ($this->getParameter('auto_start', true))
     {
+      // prevent PHP from injecting Expires/Pragma/Cache-Control headers via session_cache_limiter()
+      session_cache_limiter('');
       // start our session
       session_start();
     }
