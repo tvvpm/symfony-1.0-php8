@@ -129,10 +129,7 @@ class sfCore
   {
     self::$autoloadCallables[] = $callable;
 
-    if (function_exists('spl_autoload_register'))
-    {
-      spl_autoload_register($callable);
-    }
+    spl_autoload_register($callable);
   }
 
   static public function getAutoloadCallables()
@@ -184,36 +181,7 @@ class sfCore
 
   static public function initAutoload()
   {
-    if (function_exists('spl_autoload_register'))
-    {
-      ini_set('unserialize_callback_func', 'spl_autoload_call');
-    }
-    else if (!function_exists('__autoload'))
-    {
-      ini_set('unserialize_callback_func', '__autoload');
-
-      function __autoload($class)
-      {
-        foreach (sfCore::getAutoloadCallables() as $callable)
-        {
-          if (call_user_func($callable, $class))
-          {
-            return true;
-          }
-        }
-
-        // unspecified class
-        // do not print an error if the autoload came from class_exists
-        $trace = debug_backtrace();
-        if (count($trace) < 1 || ($trace[1]['function'] != 'class_exists' && $trace[1]['function'] != 'is_a'))
-        {
-          $error = sprintf('Autoloading of class "%s" failed. Try to clear the symfony cache and refresh.', $class);
-          $e = new sfAutoloadException($error);
-
-          $e->printStackTrace();
-        }
-      }
-    }
+    ini_set('unserialize_callback_func', 'spl_autoload_call');
 
     self::addAutoloadCallable(array('sfCore', 'splAutoload'));
   }
@@ -258,20 +226,8 @@ class sfCore
       }
     }
 
-    if (function_exists('spl_autoload_register'))
-    {
-      ini_set('unserialize_callback_func', 'spl_autoload_call');
+    ini_set('unserialize_callback_func', 'spl_autoload_call');
 
-      spl_autoload_register(array('sfCore', 'splSimpleAutoload'));
-    }
-    elseif (!function_exists('__autoload'))
-    {
-      ini_set('unserialize_callback_func', '__autoload');
-
-      function __autoload($class)
-      {
-        return sfCore::splSimpleAutoload($class);
-      }
-    }
+    spl_autoload_register(array('sfCore', 'splSimpleAutoload'));
   }
 }
