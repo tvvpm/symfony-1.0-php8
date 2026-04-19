@@ -22,6 +22,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfRouting.class.php 6614 2007-12-20 14:51:15Z noel $
  */
+#[AllowDynamicProperties]
 class sfRouting
 {
   protected static

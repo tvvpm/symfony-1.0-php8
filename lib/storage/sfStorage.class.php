@@ -18,6 +18,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfStorage.class.php 7791 2008-03-09 21:57:09Z fabien $
  */
+#[AllowDynamicProperties]
 abstract class sfStorage
 {
   protected

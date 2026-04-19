@@ -18,6 +18,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfController.class.php 14385 2008-12-30 08:36:18Z noel $
  */
+#[AllowDynamicProperties]
 abstract class sfController
 {
   protected

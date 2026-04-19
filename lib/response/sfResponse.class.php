@@ -17,6 +17,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfResponse.class.php 3250 2007-01-12 20:09:11Z fabien $
  */
+#[AllowDynamicProperties]
 abstract class sfResponse
 {
   protected

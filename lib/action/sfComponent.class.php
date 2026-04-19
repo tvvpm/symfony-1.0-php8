@@ -16,6 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfComponent.class.php 5380 2007-10-05 13:46:22Z noel $
  */
+#[AllowDynamicProperties]
 abstract class sfComponent
 {
   protected

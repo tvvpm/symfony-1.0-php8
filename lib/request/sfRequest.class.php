@@ -20,6 +20,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfRequest.class.php 7791 2008-03-09 21:57:09Z fabien $
  */
+#[AllowDynamicProperties]
 abstract class sfRequest
 {
   /**

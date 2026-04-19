@@ -20,6 +20,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfViewCacheManager.class.php 17468 2009-04-21 07:21:38Z fabien $
  */
+#[AllowDynamicProperties]
 class sfViewCacheManager
 {
   protected

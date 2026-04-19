@@ -22,6 +22,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfUser.class.php 7791 2008-03-09 21:57:09Z fabien $
  */
+#[AllowDynamicProperties]
 class sfUser
 {
   /**
