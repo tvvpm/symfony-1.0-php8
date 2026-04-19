@@ -132,7 +132,7 @@ abstract class sfAdminGenerator extends sfCrudGenerator
     {
        //Nos aseguramos que tenemos la clase btn
       if (strpos(' btn ', ' ' . $params['class'] . ' ' )===false)
-        $options['class'] = "btn ${params['class']}";
+        $options['class'] = "btn {$params['class']}";
     }
 
     if (isset($params['icon']))
