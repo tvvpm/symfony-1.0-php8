@@ -31,7 +31,7 @@ class FilterReader extends Reader {
     
     protected $in;
     
-    function __construct(Reader $in = null) {
+    function __construct(?Reader $in = null) {
         $this->in = $in;
         //parent::__construct(new FileReader($file, $exclusive));
     }

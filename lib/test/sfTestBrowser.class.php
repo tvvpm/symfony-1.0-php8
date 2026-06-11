@@ -462,7 +462,7 @@ function sfTestBrowserErrorHandler($errno, $errstr, $errfile, $errline)
     case E_NOTICE:
       throw new Exception(sprintf($msg, 'notice'));
       break;
-    case E_STRICT:
+    case 2048: // E_STRICT, deprecada en PHP 8.4
       throw new Exception(sprintf($msg, 'strict'));
       break;
   }
