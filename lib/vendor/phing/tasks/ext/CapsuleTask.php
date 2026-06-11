@@ -433,7 +433,7 @@ class CapsuleTask extends Task {
      * <code>BuildException</code>.
      */
     protected function populateInitialContext(Capsule $context) {
-        $this->context->put("now", strftime("%c", time()));
+        $this->context->put("now", @strftime("%c", time()));
         $this->context->put("task", $this);
     }
 

@@ -76,13 +76,13 @@ class TstampTask extends Task
 			$cf->execute($this);
 		}
 		
-		$dstamp = strftime('%Y%m%d');
+		$dstamp = @strftime('%Y%m%d');
 		$this->prefixProperty('DSTAMP', $dstamp);
 		
-		$tstamp = strftime('%H%M');
+		$tstamp = @strftime('%H%M');
 		$this->prefixProperty('TSTAMP', $tstamp);
 		
-		$today = strftime('%B %d %Y');
+		$today = @strftime('%B %d %Y');
 		$this->prefixProperty('TODAY', $today);
 	}
 	
@@ -155,7 +155,7 @@ class TstampCustomFormat
 			setlocale(LC_ALL, $this->locale);
 		}
 		
-		$value = strftime($this->pattern);
+		$value = @strftime($this->pattern);
 		$tstamp->prefixProperty($this->propertyName, $value);
 		
 		if (!empty($this->locale))

@@ -338,7 +338,7 @@ class MSSQLCallableStatement extends MSSQLPreparedStatement implements CallableS
             throw new SQLException('Requesting variable not bound to output var: '.$paramIndex);
         }
         if ($this->boundOutVars[$paramIndex] === null) { return null; }
-        return (boolean) $this->boundOutVars[$paramIndex];
+        return (bool) $this->boundOutVars[$paramIndex];
     }
             
     /**
@@ -386,7 +386,7 @@ class MSSQLCallableStatement extends MSSQLPreparedStatement implements CallableS
             throw new SQLException("Unable to convert value at column " . $paramIndex . " to timestamp: " . $this->boundOutVars[$paramIndex]);
         }        
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }
@@ -446,7 +446,7 @@ class MSSQLCallableStatement extends MSSQLPreparedStatement implements CallableS
             throw new SQLException("Unable to convert value at column " . $paramIndex . " to timestamp: " . $this->boundOutVars[$paramIndex]);
         }        
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }
@@ -468,7 +468,7 @@ class MSSQLCallableStatement extends MSSQLPreparedStatement implements CallableS
             throw new SQLException("Unable to convert value at column " . $paramIndex . " to timestamp: " . $this->boundOutVars[$paramIndex]);
         }        
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }

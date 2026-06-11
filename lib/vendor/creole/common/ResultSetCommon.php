@@ -312,7 +312,7 @@ abstract class ResultSetCommon {
         $idx = (is_int($column) ? $column - 1 : $column);
         if (!array_key_exists($idx, $this->fields)) { throw new SQLException("Invalid resultset column: " . $column); }
         if ($this->fields[$idx] === null) { return null; }
-        return (boolean) $this->fields[$idx];
+        return (bool) $this->fields[$idx];
     }
             
     /**
@@ -359,7 +359,7 @@ abstract class ResultSetCommon {
             return $ts;
         }
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }
@@ -416,7 +416,7 @@ abstract class ResultSetCommon {
             return $ts;
         }        
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }        
@@ -439,7 +439,7 @@ abstract class ResultSetCommon {
             return $ts;
         }
         if (strpos($format, '%') !== false) {
-            return strftime($format, $ts);
+            return @strftime($format, $ts);
         } else {
             return date($format, $ts);
         }        
