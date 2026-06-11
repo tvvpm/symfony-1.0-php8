@@ -51,7 +51,14 @@ class sfStringValidator extends sfValidator
    */
   public function execute(&$value, &$error)
   {
-    $decodedValue = sfToolkit::isUTF8($value) && function_exists('utf8_decode') ? utf8_decode($value) : $value;
+    if (sfToolkit::isUTF8($value) && function_exists('mb_convert_encoding'))
+    {
+      $decodedValue = mb_convert_encoding($value, 'ISO-8859-1', 'UTF-8');
+    }
+    else
+    {
+      $decodedValue = sfToolkit::isUTF8($value) && function_exists('utf8_decode') ? utf8_decode($value) : $value;
+    }
 
     $min = $this->getParameterHolder()->get('min');
     if ($min !== null && strlen(trim($decodedValue)) < $min)
