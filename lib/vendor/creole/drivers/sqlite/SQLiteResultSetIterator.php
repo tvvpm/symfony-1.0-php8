@@ -47,11 +47,13 @@ class SQLiteResultSetIterator implements Iterator {
     /**
      * This method actually has no effect, since we do not rewind ResultSet for iteration.
      */
+    #[\ReturnTypeWillChange]
     function rewind()
     {        
         sqlite_rewind($this->result);
     }
     
+    #[\ReturnTypeWillChange]
     function valid()
     {
 	return ( $this->pos < $this->row_count );
@@ -63,6 +65,7 @@ class SQLiteResultSetIterator implements Iterator {
      * of iteration.
      * @return int
      */
+    #[\ReturnTypeWillChange]
     function key()
     {
         return $this->pos;
@@ -72,6 +75,7 @@ class SQLiteResultSetIterator implements Iterator {
      * Returns the row (assoc array) at current cursor pos.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     function current()
     {
        return sqlite_fetch_array($this->result, $this->fetchmode);
@@ -80,6 +84,7 @@ class SQLiteResultSetIterator implements Iterator {
     /**
      * Advances internal cursor pos.
      */
+    #[\ReturnTypeWillChange]
     function next()
     {
         $this->pos++;

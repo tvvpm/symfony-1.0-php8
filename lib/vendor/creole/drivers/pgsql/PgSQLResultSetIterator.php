@@ -51,11 +51,13 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
     /**
      * This method actually has no effect, since we do not rewind ResultSet for iteration.
      */
+    #[\ReturnTypeWillChange]
     function rewind()
     {        
         $this->pos = 0;
     }
     
+    #[\ReturnTypeWillChange]
     function valid()
     {
 		return ( $this->pos < $this->row_count );
@@ -67,6 +69,7 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
      * of iteration.
      * @return int
      */
+    #[\ReturnTypeWillChange]
     function key()
     {
         return $this->pos;
@@ -76,6 +79,7 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
      * Returns the row (assoc array) at current cursor pos.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     function current()
     {
        return pg_fetch_array($this->result, $this->pos, $this->fetchmode);
@@ -84,6 +88,7 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
     /**
      * Advances internal cursor pos.
      */
+    #[\ReturnTypeWillChange]
     function next()
     {
         $this->pos++;
@@ -92,6 +97,7 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
     /**
      * Sets cursor to specific value.
      */
+    #[\ReturnTypeWillChange]
     function seek ( $index )
     {
     	if ( ! is_int ( $index ) ) {
@@ -103,6 +109,7 @@ class PgSQLResultSetIterator implements SeekableIterator, Countable {
 		$this->pos = $index;
     }
 
+    #[\ReturnTypeWillChange]
     function count ( ) {
 		return $this->row_count;
     }

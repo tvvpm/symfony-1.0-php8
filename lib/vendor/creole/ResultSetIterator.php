@@ -66,6 +66,7 @@ class ResultSetIterator implements Iterator {
      * If not at start of resultset, this method will call seek(0).
      * @see ResultSet::seek()
      */
+    #[\ReturnTypeWillChange]
     function rewind()
     {
         if (!$this->rs->isBeforeFirst()) {
@@ -78,6 +79,7 @@ class ResultSetIterator implements Iterator {
      * by advancing the cursor position.
      * @see ResultSet::next()
      */
+    #[\ReturnTypeWillChange]
     function valid()
     {
         return $this->rs->next();
@@ -87,6 +89,7 @@ class ResultSetIterator implements Iterator {
      * Returns the cursor position.
      * @return int
      */
+    #[\ReturnTypeWillChange]
     function key()
     {
         return $this->rs->getCursorPos();
@@ -96,6 +99,7 @@ class ResultSetIterator implements Iterator {
      * Returns the row (assoc array) at current cursor pos.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     function current()
     {
        return $this->rs->getRow();
@@ -106,6 +110,7 @@ class ResultSetIterator implements Iterator {
      * the cursor pos in valid().
      * @see valid()
      */
+    #[\ReturnTypeWillChange]
     function next()
     {
     }
