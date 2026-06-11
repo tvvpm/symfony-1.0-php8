@@ -15,6 +15,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfI18N.class.php 10841 2008-08-13 12:51:18Z noel $
  */
+#[AllowDynamicProperties]
 class sfI18N
 {
   protected

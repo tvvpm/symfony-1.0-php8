@@ -13,6 +13,7 @@
  * A node, used by Spyc for parsing YAML.
  * @package Spyc
  */
+#[AllowDynamicProperties]
 class YAMLNode
 {
   public $parent;
@@ -48,6 +49,7 @@ class YAMLNode
  * </code>
  * @package Spyc
  */
+#[AllowDynamicProperties]
 class Spyc
 {
   /**

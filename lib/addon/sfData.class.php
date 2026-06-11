@@ -17,6 +17,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfData.class.php 20457 2009-07-24 09:25:18Z FabianLange $
  */
+#[AllowDynamicProperties]
 abstract class sfData
 {
   protected

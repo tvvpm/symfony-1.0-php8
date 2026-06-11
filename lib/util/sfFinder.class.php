@@ -35,6 +35,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfFinder.class.php 14266 2008-12-22 20:40:59Z FabianLange $
  */
+#[AllowDynamicProperties]
 class sfFinder
 {
   protected $type        = 'file';
@@ -551,6 +552,7 @@ class sfFinder
  * @copyright  2002 Richard Clamp <richardc@unixbeard.net>
  * @version    SVN: $Id: sfFinder.class.php 14266 2008-12-22 20:40:59Z FabianLange $
  */
+#[AllowDynamicProperties]
 class sfGlobToRegex
 {
   protected static $strict_leading_dot = true;
@@ -673,6 +675,7 @@ class sfGlobToRegex
  * @see        http://physics.nist.gov/cuu/Units/binary.html
  * @version    SVN: $Id: sfFinder.class.php 14266 2008-12-22 20:40:59Z FabianLange $
  */
+#[AllowDynamicProperties]
 class sfNumberCompare
 {
   protected $test = '';

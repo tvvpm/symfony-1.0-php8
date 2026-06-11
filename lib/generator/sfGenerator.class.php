@@ -16,6 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfGenerator.class.php 3513 2007-02-19 13:42:16Z fabien $
  */
+#[AllowDynamicProperties]
 abstract class sfGenerator
 {
   protected

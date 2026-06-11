@@ -21,6 +21,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfContext.class.php 16165 2009-03-11 07:16:24Z fabien $
  */
+#[AllowDynamicProperties]
 class sfContext
 {
   protected

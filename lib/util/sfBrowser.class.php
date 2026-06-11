@@ -16,6 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfBrowser.class.php 11021 2008-08-21 15:34:34Z fabien $
  */
+#[AllowDynamicProperties]
 class sfBrowser
 {
   protected

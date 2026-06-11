@@ -24,6 +24,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfPager.class.php 18089 2009-05-09 06:36:09Z fabien $
  */
+#[AllowDynamicProperties]
 abstract class sfPager
 {
   protected
