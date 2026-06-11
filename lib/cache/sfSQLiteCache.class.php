@@ -229,7 +229,7 @@ class sfSQLiteCache extends sfCache
   *
   * @see sfCache
   */
-  public function set($id, $namespace = self::DEFAULT_NAMESPACE, $data)
+  public function set($id, $namespace, $data)
   {
     if ($this->automaticCleaningFactor > 0)
     {

@@ -71,7 +71,7 @@ class FileUtils {
      * @param Project $project
      * @return void
      */
-    function copyFile(PhingFile $sourceFile, PhingFile $destFile, $overwrite = false, $preserveLastModified = true, &$filterChains = null, Project $project) {
+    function copyFile(PhingFile $sourceFile, PhingFile $destFile, $overwrite, $preserveLastModified, &$filterChains, Project $project) {
        
         if ($overwrite || !$destFile->exists() || $destFile->lastModified() < $sourceFile->lastModified()) {
             if ($destFile->exists() && $destFile->isFile()) {

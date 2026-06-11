@@ -64,7 +64,7 @@ abstract class sfCache
   *
   * @return boolean true if no problem
   */
-  abstract public function set($id, $namespace = self::DEFAULT_NAMESPACE, $data);
+  abstract public function set($id, $namespace, $data);
 
  /**
   * Removes a content from the cache.

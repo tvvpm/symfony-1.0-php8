@@ -50,7 +50,7 @@ function __($text, $args = array(), $catalogue = 'messages')
   }
 }
 
-function format_number_choice($text, $args = array(), $number, $catalogue = 'messages')
+function format_number_choice($text, $args, $number, $catalogue = 'messages')
 {
   $translated = __($text, $args, $catalogue);
 
