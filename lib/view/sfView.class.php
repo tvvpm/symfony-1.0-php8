@@ -436,7 +436,7 @@ abstract class sfView
    */
   public function setDecorator($boolean)
   {
-    $this->decorator = (boolean) $boolean;
+    $this->decorator = (bool) $boolean;
   }
 
   /**

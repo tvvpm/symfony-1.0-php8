@@ -366,7 +366,7 @@ class PhingFile {
         $fs = FileSystem::getFileSystem();
 
         if ($fs->checkAccess($this)) {
-            return (boolean) @is_readable($this->getAbsolutePath());
+            return (bool) @is_readable($this->getAbsolutePath());
         }
         return false;
     }

@@ -411,7 +411,7 @@ class Column extends XMLElement {
 	 */
 	public function setNotNull($status)
 	{
-		$this->isNotNull = (boolean) $status;
+		$this->isNotNull = (bool) $status;
 	}
 
 	 /**
@@ -429,7 +429,7 @@ class Column extends XMLElement {
 	 */
 	public function setPrimaryKey($pk)
 	{
-		$this->isPrimaryKey = (boolean) $pk;
+		$this->isPrimaryKey = (bool) $pk;
 	}
 
 	/**
@@ -445,7 +445,7 @@ class Column extends XMLElement {
 	 */
 	public function setNodeKey($nk)
 	{
-		$this->isNodeKey = (boolean) $nk;
+		$this->isNodeKey = (bool) $nk;
 	}
 
 	/**
@@ -825,7 +825,7 @@ class Column extends XMLElement {
 	 */
 	public function setAutoIncrement($value)
 	{
-		$this->isAutoIncrement = (boolean) $value;
+		$this->isAutoIncrement = (bool) $value;
 	}
 
 	/**

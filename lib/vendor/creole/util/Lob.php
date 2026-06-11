@@ -238,6 +238,6 @@ abstract class Lob {
     public function isModified()
     {
         // cast it so that NULL will also eval to false
-        return (boolean) $this->modified;
+        return (bool) $this->modified;
     }
 }

@@ -61,7 +61,7 @@ class PhingCallTask extends Task {
      *  @param boolean new value
      */
     function setInheritAll($inherit) {
-        $this->inheritAll = (boolean) $inherit;
+        $this->inheritAll = (bool) $inherit;
     }
 
     /**
@@ -71,7 +71,7 @@ class PhingCallTask extends Task {
      *  @param boolean new value
      */
     function setInheritRefs($inheritRefs) {
-        $this->inheritRefs = (boolean) $inheritRefs;
+        $this->inheritRefs = (bool) $inheritRefs;
     }
 
     /**

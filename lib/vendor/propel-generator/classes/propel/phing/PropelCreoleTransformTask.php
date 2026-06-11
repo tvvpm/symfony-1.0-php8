@@ -222,7 +222,7 @@ class PropelCreoleTransformTask extends Task {
 
 	public function setAddVendorInfo($v)
 	{
-		$this->addVendorInfo = (boolean) $v;
+		$this->addVendorInfo = (bool) $v;
 	}
 
 	/**

@@ -320,7 +320,7 @@ class Criteria implements IteratorAggregate {
 	 */
 	public function setUseTransaction($v)
 	{
-		$this->useTransaction = (boolean) $v;
+		$this->useTransaction = (bool) $v;
 	}
 
 	/**
@@ -644,7 +644,7 @@ class Criteria implements IteratorAggregate {
 	 */
 	public function setIgnoreCase($b)
 	{
-		$this->ignoreCase = (boolean) $b;
+		$this->ignoreCase = (bool) $b;
 		return $this;
 	}
 
@@ -673,7 +673,7 @@ class Criteria implements IteratorAggregate {
 	 */
 	public function setSingleRecord($b)
 	{
-		$this->singleRecord = (boolean) $b;
+		$this->singleRecord = (bool) $b;
 		return $this;
 	}
 

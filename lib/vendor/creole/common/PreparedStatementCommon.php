@@ -524,7 +524,7 @@ abstract class PreparedStatementCommon {
         if ($value === null) {
             $this->setNull($paramIndex);
         } else {
-            $this->boundInVars[$paramIndex] = (double) $value;
+            $this->boundInVars[$paramIndex] = (float) $value;
         }
     } 
         

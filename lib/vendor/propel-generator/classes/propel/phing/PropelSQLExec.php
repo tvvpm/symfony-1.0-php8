@@ -212,7 +212,7 @@ class PropelSQLExec extends Task {
 	 */
 	public function setAutoCommit($autocommit)
 	{
-		$this->autocommit = (boolean) $autocommit;
+		$this->autocommit = (bool) $autocommit;
 	}
 
 	/**
@@ -248,7 +248,7 @@ class PropelSQLExec extends Task {
 	 */
 	public function setPrint($print)
 	{
-		$this->print = (boolean) $print;
+		$this->print = (bool) $print;
 	}
 
 	/**
@@ -258,7 +258,7 @@ class PropelSQLExec extends Task {
 	 */
 	public function setShowheaders($showheaders)
 	{
-		$this->showheaders = (boolean) $showheaders;
+		$this->showheaders = (bool) $showheaders;
 	}
 
 	/**

@@ -205,7 +205,7 @@ class CreoleSQLExecTask extends CreoleTask {
      */
     public function setPrint($print)
     {
-        $this->print = (boolean) $print;
+        $this->print = (bool) $print;
     }
         
     /**
@@ -214,7 +214,7 @@ class CreoleSQLExecTask extends CreoleTask {
      * @param boolean $showheaders
      */
     public function setShowheaders($showheaders) {
-        $this->showheaders = (boolean) $showheaders;
+        $this->showheaders = (bool) $showheaders;
     }
 
     /**
@@ -232,7 +232,7 @@ class CreoleSQLExecTask extends CreoleTask {
      * @param $append
      */
     public function setAppend($append) {
-        $this->append = (boolean) $append;
+        $this->append = (bool) $append;
     }
 
     

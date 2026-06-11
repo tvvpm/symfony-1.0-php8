@@ -118,7 +118,7 @@ class StringHelper {
         }
         // otherwise assume it's something like "true" or "t"
         $trimmed = strtolower(trim($s));
-        return (boolean) in_array($trimmed, self::$TRUE_VALUES);
+        return (bool) in_array($trimmed, self::$TRUE_VALUES);
     }
 
     /** tests if a string is a representative of a boolean */
@@ -133,7 +133,7 @@ class StringHelper {
         }
 
         $test = trim(strtolower($s));
-        return (boolean) in_array($test, array_merge(self::$FALSE_VALUES, self::$TRUE_VALUES));
+        return (bool) in_array($test, array_merge(self::$FALSE_VALUES, self::$TRUE_VALUES));
     }
         
     /**

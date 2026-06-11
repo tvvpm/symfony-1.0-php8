@@ -235,7 +235,7 @@ class Database extends XMLElement {
 	 */
 	public function setHeavyIndexing($v)
 	{
-		$this->heavyIndexing = (boolean) $v;
+		$this->heavyIndexing = (bool) $v;
 	}
 
 	/**

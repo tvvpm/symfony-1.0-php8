@@ -63,7 +63,7 @@ class lime_test
 
   public function ok($exp, $message = '')
   {
-    if ($result = (boolean) $exp)
+    if ($result = (bool) $exp)
     {
       ++$this->passed;
     }

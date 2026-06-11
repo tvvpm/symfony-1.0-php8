@@ -275,7 +275,7 @@ class PatternSet extends DataType {
 
     /** helper for FileSet. */
     function hasPatterns() {
-        return (boolean) count($this->includesFileList) > 0 || count($this->excludesFileList) > 0
+        return (bool) count($this->includesFileList) > 0 || count($this->excludesFileList) > 0
                || count($this->includeList) > 0 || count($this->excludeList) > 0;
     }
 

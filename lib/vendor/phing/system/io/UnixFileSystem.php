@@ -218,7 +218,7 @@ class UnixFileSystem extends FileSystem {
         if ( ($f1 instanceof PhingFile) && ($f2 instanceof PhingFile) ) {
             $f1Path = $f1->getPath();
             $f2Path = $f2->getPath();
-            return (boolean) strcmp((string) $f1Path, (string) $f2Path);
+            return (bool) strcmp((string) $f1Path, (string) $f2Path);
         } else {
             throw new Exception("IllegalArgutmentType: Argument is not PhingFile");
         }

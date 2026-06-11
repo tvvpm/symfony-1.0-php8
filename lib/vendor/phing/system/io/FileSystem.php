@@ -184,9 +184,9 @@ abstract class FileSystem {
         }
 
         if (!$write) {
-            return (boolean) @is_readable($strPath);
+            return (bool) @is_readable($strPath);
         } else {
-            return (boolean) @is_writable($strPath);
+            return (bool) @is_writable($strPath);
         }
     }
 

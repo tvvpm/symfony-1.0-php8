@@ -97,7 +97,7 @@ class sfWebResponse extends sfResponse
    */
   public function setHeaderOnly($value = true)
   {
-    $this->headerOnly = (boolean) $value;
+    $this->headerOnly = (bool) $value;
   }
 
   /**

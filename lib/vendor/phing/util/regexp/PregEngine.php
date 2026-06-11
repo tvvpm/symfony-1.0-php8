@@ -41,7 +41,7 @@ class PregEngine implements RegexpEngine {
      * @return void
      */
     function setIgnoreCase($bit) {
-        $this->ignoreCase = (boolean) $bit;
+        $this->ignoreCase = (bool) $bit;
     }
 
     /**

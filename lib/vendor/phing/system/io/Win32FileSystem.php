@@ -448,7 +448,7 @@ class Win32FileSystem extends FileSystem {
     function compare(PhingFile $f1, PhingFile $f2) {
         $f1Path = $f1->getPath();
         $f2Path = $f2->getPath();
-        return (boolean) strcasecmp((string) $f1Path, (string) $f2Path);        
+        return (bool) strcasecmp((string) $f1Path, (string) $f2Path);        
     }
 
 

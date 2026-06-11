@@ -94,7 +94,7 @@ abstract class BaseObject {
 	 */
 	public function setNew($b)
 	{
-		$this->_new = (boolean) $b;
+		$this->_new = (bool) $b;
 	}
 
 	/**
@@ -113,7 +113,7 @@ abstract class BaseObject {
 	 */
 	public function setDeleted($b)
 	{
-		$this->_deleted = (boolean) $b;
+		$this->_deleted = (bool) $b;
 	}
 
 	/**

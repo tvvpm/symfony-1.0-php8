@@ -74,7 +74,7 @@ class BaseFilterReader extends FilterReader {
      * @param boolean $initialized Whether or not the filter is initialized.
      */
     function setInitialized($initialized) {
-        $this->initialized = (boolean) $initialized;
+        $this->initialized = (bool) $initialized;
     }
 
     /**

@@ -75,7 +75,7 @@ class CopyTask extends Task {
      * @access public
      */
     function setOverwrite($bool) {
-        $this->overwrite = (boolean) $bool;
+        $this->overwrite = (bool) $bool;
     }
 
     /**
@@ -100,7 +100,7 @@ class CopyTask extends Task {
      * @access public
      */
     function setTstamp($bool) {
-        $this->preserveLMT = (boolean) $bool;
+        $this->preserveLMT = (bool) $bool;
     }
 
 
@@ -114,7 +114,7 @@ class CopyTask extends Task {
      * @access public
      */
     function setIncludeEmptyDirs($bool) {
-        $this->includeEmpty = (boolean) $bool;
+        $this->includeEmpty = (bool) $bool;
     }
 
 

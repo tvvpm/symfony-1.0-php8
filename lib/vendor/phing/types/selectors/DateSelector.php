@@ -110,7 +110,7 @@ class DateSelector extends BaseExtendSelector {
      * @param boolean $includeDirs whether to check the timestamp on directories
      */
     public function setCheckdirs($includeDirs) {
-        $this->includeDirs = (boolean) $includeDirs;
+        $this->includeDirs = (bool) $includeDirs;
     }
 
     /**

@@ -292,7 +292,7 @@ class SmartyTask extends Task {
      * @return void
      */
     public function setForceCompile($force) {
-        $this->forceCompile = (boolean) $force;
+        $this->forceCompile = (bool) $force;
     }
     
     /**
