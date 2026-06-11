@@ -32,6 +32,7 @@ require_once 'propel/om/Persistent.php';
  * @version    $Revision: 536 $
  * @package    propel.om
  */
+#[AllowDynamicProperties]
 abstract class BaseObject {
 
 	/**

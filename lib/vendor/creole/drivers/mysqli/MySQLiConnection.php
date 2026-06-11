@@ -32,6 +32,9 @@ include_once 'creole/drivers/mysqli/MySQLiResultSet.php';
  * @package   creole.drivers.mysqli
  */
 class MySQLiConnection extends ConnectionCommon implements Connection {
+
+    /** Ultima query lanzada (propiedad dinamica en PHP 8.2+) */
+    public $lastQuery = '';
     /** Current database (used in mysqli_select_db()). */
     private $database;
 
