@@ -71,6 +71,11 @@ function escape_javascript($javascript = '')
  */
 function escape_once($html)
 {
+  if ($html === null || $html === '')
+  {
+    return '';
+  }
+
   return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, sfConfig::get('sf_charset')));
 }
 
