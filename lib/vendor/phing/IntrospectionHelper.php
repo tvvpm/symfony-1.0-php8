@@ -36,7 +36,7 @@ include_once 'phing/util/StringHelper.php';
  *
  * @author    Andreas Aderhold <andi@binarycloud.com>
  * @author    Hans Lellelid <hans@xmpl.org>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.19 $
  * @package   phing
  */
@@ -221,8 +221,8 @@ class IntrospectionHelper {
                     
                     $classname = null;
                     
-                    if (($hint = $params[0]->getClass()) !== null) { 
-                        $classname = $hint->getName();    
+                    if (($hint = self::getParamClassName($params[0])) !== null) { 
+                        $classname = $hint;    
                     }                    
                     
                     if ($classname === null) {
@@ -249,8 +249,8 @@ class IntrospectionHelper {
 
                     $classname = null;
                     
-                    if (($hint = $params[0]->getClass()) !== null) { 
-                        $classname = $hint->getName();    
+                    if (($hint = self::getParamClassName($params[0])) !== null) { 
+                        $classname = $hint;    
                     }                    
                     
                     // we don't use the classname here, but we need to make sure it exists before
@@ -261,10 +261,22 @@ class IntrospectionHelper {
                 
                     $this->nestedCreators[$name] = $method;
                 } 
-            } // if $method->isPublic()        
-        } // foreach        
+            } // if $method->isPublic()
+        } // foreach
     }
 
+    /**
+     * Nombre de la clase tipada del parametro o null; sustituye a
+     * ReflectionParameter::getClass(), deprecado en PHP 8.0.
+     * @return string|null
+     */
+    private static function getParamClassName(ReflectionParameter $param) {
+        $type = $param->getType();
+        if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
+            return $type->getName();
+        }
+        return null;
+    }
 
     /** Sets the named attribute. */
     function setAttribute(Project $project, $element, $attributeName, &$value) {
@@ -326,8 +338,8 @@ class IntrospectionHelper {
 
                 $classname = null;
                 
-                if (($hint = $params[0]->getClass()) !== null) { 
-                    $classname = $hint->getName();    
+                if (($hint = self::getParamClassName($params[0])) !== null) { 
+                    $classname = $hint;    
                 }
                 
                 // there should only be one param; we'll just assume ....
@@ -412,8 +424,8 @@ class IntrospectionHelper {
 
                 $classname = null;
             
-                if (($hint = $params[0]->getClass()) !== null) { 
-                    $classname = $hint->getName();    
+                if (($hint = self::getParamClassName($params[0])) !== null) { 
+                    $classname = $hint;    
                 }                
                 
                 // create a new instance of the object and add it via $addMethod                

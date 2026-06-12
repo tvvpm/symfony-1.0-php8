@@ -28,7 +28,7 @@ include_once 'phing/tasks/system/condition/ConditionBase.php';
  *  Note: implements condition interface (see condition/Condition.php)
  *
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
+ *  @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  *  @version   $Revision: 1.11 $
  *  @package   phing.tasks.system
  */
@@ -45,6 +45,9 @@ class AvailableTask extends Task {
     
     private $type = null;
     private $filepath = null;
+
+    /** File to check for; declarada para PHP 8.2+ */
+    private $file;
 
     function setProperty($property) {
         $this->property = (string) $property;

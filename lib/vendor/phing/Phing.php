@@ -69,6 +69,9 @@ class Phing {
     /** PhingFile that we are using for configuration */
     private $buildFile = null;
 
+    /** Nombre de buildfile a buscar hacia arriba (-find); declarada para PHP 8.2+ */
+    private $searchForThis;
+
     /** The build targets */
     private $targets = array();
 
@@ -583,7 +586,7 @@ class Phing {
 		
 	            switch ($level) {
 				
-					case E_STRICT:
+					case 2048: // E_STRICT, constante deprecada en PHP 8.4 (el nivel ya no existe desde 8.0)
 					case E_NOTICE:
 	                case E_USER_NOTICE:
 						self::log($message, PROJECT_MSG_VERBOSE);

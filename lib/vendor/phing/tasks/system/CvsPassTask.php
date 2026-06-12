@@ -138,7 +138,7 @@ class CVSPassTask extends Task {
     /**
      * "Encode" the password.
      */
-    private final function mangle($password){
+    private function mangle($password){ // final eliminado: private+final genera warning desde PHP 8.0
         $buf = "";
         for ($i = 0, $plen = strlen($password); $i < $plen; $i++) {
             $buf .= chr(self::$shifts[ord($password[$i])]);

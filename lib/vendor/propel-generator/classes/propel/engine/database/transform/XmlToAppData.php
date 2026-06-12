@@ -61,6 +61,9 @@ class XmlToAppData extends AbstractHandler {
 
 	private $encoding;
 
+	/** Primera pasada del parseo; declarada para PHP 8.2+ */
+	private $firstPass;
+
 	/** two-dimensional array,
 		first dimension is for schemas(key is the path to the schema file),
 		second is for tags within the schema */

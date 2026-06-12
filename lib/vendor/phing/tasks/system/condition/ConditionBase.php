@@ -31,7 +31,7 @@ include_once 'phing/tasks/system/condition/Condition.php';
  * 
  *    @author    Hans Lellelid <hans@xmpl.org>
  *  @author    Andreas Aderhold <andi@binarycloud.com>
- *  @copyright © 2001,2002 THYRELL. All rights reserved
+ *  @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  *  @version   $Revision: 1.16 $
  *  @package   phing.tasks.system.condition
  */
@@ -46,6 +46,7 @@ abstract class ConditionBase extends ProjectComponent implements IteratorAggrega
     /**
      * Required for IteratorAggregate
      */
+    #[\ReturnTypeWillChange]
     function getIterator() {
         return new ConditionEnumeration($this);
     }
@@ -169,10 +170,12 @@ class ConditionEnumeration implements Iterator {
         $this->outer = $outer;
     }
     
+    #[\ReturnTypeWillChange]
     public function valid() {
         return $this->outer->countConditions() > $this->num;
     }
 
+    #[\ReturnTypeWillChange]
     function current() {
         $o = $this->outer->conditions[$this->num];
         if ($o instanceof ProjectComponent) {
@@ -181,14 +184,17 @@ class ConditionEnumeration implements Iterator {
         return $o;
     }
     
+    #[\ReturnTypeWillChange]
     function next() {
         $this->num++;
     }
-    
+
+    #[\ReturnTypeWillChange]
     function key() {
         return $this->num;
     }
-    
+
+    #[\ReturnTypeWillChange]
     function rewind() {
         $this->num = 0;
     }

@@ -35,7 +35,7 @@ include_once 'phing/system/io/FileReader.php';
  * handler classes.
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.8 $ $Date: 2005/05/26 13:10:52 $
  * @access    public
  * @package   phing.parser
@@ -80,7 +80,7 @@ class ExpatParser extends AbstractSAXParser {
         $this->parser = xml_parser_create();
         $this->buffer = 4096;
         $this->location = new Location();
-        xml_set_object($this->parser, $this);
+        // xml_set_object eliminado: deprecada en PHP 8.4 y redundante, los handlers ya son callables array($this, ...)
         xml_set_element_handler($this->parser, array($this,"startElement"),array($this,"endElement"));
         xml_set_character_data_handler($this->parser, array($this, "characters"));
     }
@@ -129,12 +129,11 @@ class ExpatParser extends AbstractSAXParser {
             if (!xml_parse($this->parser, $data, $this->reader->eof())) {
                 $error = xml_error_string(xml_get_error_code($this->parser));
                 $e = new ExpatParseException($error, $this->getLocation());
-                xml_parser_free($this->parser);                
-                throw $e;  
+                // xml_parser_free eliminado: deprecada en PHP 8.5, sin efecto desde 8.0 (el parser es un objeto)
+                throw $e;
             }
         }
-        xml_parser_free($this->parser);
-        
+
         return 1;
     }
 }

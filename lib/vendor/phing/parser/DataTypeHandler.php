@@ -30,7 +30,7 @@ include_once 'phing/RuntimeConfigurable.php';
  * classes would be nested within this class
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.8 $ $Date: 2005/11/02 13:55:33 $
  * @access    public
  * @package   phing.parser
@@ -41,6 +41,7 @@ class DataTypeHandler extends AbstractHandler {
     private $target;
     private $element;
     private $wrapper;
+    private $configurator;
 
     /**
      * Constructs a new DataTypeHandler and sets up everything.

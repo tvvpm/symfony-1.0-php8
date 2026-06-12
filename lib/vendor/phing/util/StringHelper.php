@@ -168,6 +168,7 @@ class StringHelper {
      * return values suck if you want to program strict as of C or friends 
      */
     public static function substring($string, $startpos, $endpos = -1) {
+        $string = (string) $string; // los callers pasan a veces bool/null; evita "array offset on true" en PHP 8
         $len    = strlen($string);
         $endpos = (int) (($endpos === -1) ? $len-1 : $endpos);
         if ($startpos > $len-1 || $startpos < 0) {

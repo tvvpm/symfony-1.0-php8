@@ -538,7 +538,7 @@ abstract class AbstractPropelDataModelTask extends Task {
 		// with the names of the databases as a convenience for now.
 		$context->put("targetDatabase", $this->targetDatabase);
 		$context->put("targetPackage", $this->targetPackage);
-		$context->put("now", @strftime("%c"));
+		$context->put("now", date('r')); // strftime deprecada en PHP 8.1
 
 		$this->log("Target database type: " . $this->targetDatabase);
 		$this->log("Target package: " . $this->targetPackage);

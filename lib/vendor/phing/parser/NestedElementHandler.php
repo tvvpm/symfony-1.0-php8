@@ -30,7 +30,7 @@ include_once 'phing/TaskContainer.php';
  * introspects the implementation of the class and sets up the data structures.
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
- * @copyright © 2001,2002 THYRELL. All rights reserved
+ * @copyright ï¿½ 2001,2002 THYRELL. All rights reserved
  * @version   $Revision: 1.10 $ $Date: 2005/10/04 19:13:44 $
  * @access    public
  * @package   phing.parser
@@ -69,6 +69,11 @@ class NestedElementHandler extends AbstractHandler {
      *  @var object the target instance
      */
     private $target;
+
+    /**
+     *  Reference to the ProjectConfigurator object
+     */
+    private $configurator;
 
     /**
      *  Constructs a new NestedElement handler and sets up everything.
