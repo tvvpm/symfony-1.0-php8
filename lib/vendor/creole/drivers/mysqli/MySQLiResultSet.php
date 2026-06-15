@@ -98,7 +98,17 @@ class MySQLiResultSet extends ResultSetCommon implements ResultSet {
      */
     public function close()
     {
-        @mysqli_free_result($this->result);
+        // Desde PHP 8.1 mysqli lanza Error al liberar un result ya cerrado.
+        // close() se invoca de forma explícita y de nuevo desde __destruct(),
+        // así que guardamos contra el doble free anulando $this->result.
+        if ($this->result instanceof mysqli_result) {
+            try {
+                mysqli_free_result($this->result);
+            } catch (\Throwable $e) {
+                // El result ya estaba cerrado; nada que liberar.
+            }
+            $this->result = null;
+        }
         $this->fields = array();
     }
 
