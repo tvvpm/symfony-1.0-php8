@@ -296,14 +296,10 @@ class sfWebResponse extends sfResponse
     // cookies
     foreach ($this->cookies as $cookie)
     {
-      if (version_compare(phpversion(), '5.2', '>='))
-      {
-        setrawcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httpOnly']);
-      }
-      else
-      {
-        setrawcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure']);
-      }
+      // expire null means a session cookie; setrawcookie() requires an int (PHP 8.1+)
+      $expire = $cookie['expire'] === null ? 0 : $cookie['expire'];
+
+      setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httpOnly']);
 
       if (sfConfig::get('sf_logging_enabled'))
       {
