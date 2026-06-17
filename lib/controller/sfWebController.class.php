@@ -31,7 +31,7 @@ abstract class sfWebController extends sfController
   public function genUrl($parameters = array(), $absolute = false)
   {
     // absolute URL or symfony URL?
-    if (!is_array($parameters) && preg_match('#^[a-z]+\://#', $parameters))
+    if (!is_array($parameters) && null !== $parameters && preg_match('#^[a-z]+\://#', $parameters))
     {
       return $parameters;
     }
@@ -57,7 +57,7 @@ abstract class sfWebController extends sfController
     if (!is_array($parameters))
     {
       // strip fragment
-      if (false !== ($pos = strpos($parameters, '#')))
+      if (null !== $parameters && false !== ($pos = strpos($parameters, '#')))
       {
         $fragment = substr($parameters, $pos + 1);
         $parameters = substr($parameters, 0, $pos);
