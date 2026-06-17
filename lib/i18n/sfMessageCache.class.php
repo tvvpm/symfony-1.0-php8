@@ -100,7 +100,11 @@ class sfMessageCache
       return false;
     }
 
-    return unserialize($this->cache->get($ID, $group));
+    $data = $this->cache->get($ID, $group);
+    if ($data === null || $data === false || $data === '')
+      return false;
+
+    return unserialize($data);
   }
 
   /**
