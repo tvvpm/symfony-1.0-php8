@@ -1,4 +1,6 @@
-Copyright (c) 2004-2008 Fabien Potencier
+Copyright (c) 2004-2008 Fabien Potencier (symfony 1.0 original)
+Copyright (c) 2010-2024 Tomeu Vidal (modificaciones de compatibilidad PHP 7.x)
+Copyright (c) 2026 Tomeu Vidal (modificaciones de compatibilidad PHP 8.x)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
