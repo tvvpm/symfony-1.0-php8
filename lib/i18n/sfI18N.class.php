@@ -160,7 +160,9 @@ class sfI18N
     list($d, $m, $y)     = self::getDateForCulture($date, $culture);
     list($hour, $minute) = self::getTimeForCulture($date, $culture);
 
-    return mktime($hour, $minute, 0, $m, $d, $y);
+    // Casteamos a int: una fecha sin hora deja $hour/$minute en null y
+    // mktime(null, ...) lanza deprecation en PHP 8.1+ (null = medianoche).
+    return mktime((int) $hour, (int) $minute, 0, (int) $m, (int) $d, (int) $y);
   }
 
   // Return a d, m and y from a date formatted with a given culture
