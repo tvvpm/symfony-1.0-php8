@@ -57,6 +57,12 @@ class PropelTypes {
 
 	const BOOLEAN = "BOOLEAN";
 
+	// Fork Grup Serra: tipo VECTOR de MariaDB para embeddings. El acceso real
+	// (VEC_FromText / VEC_DISTANCE_COSINE) se hace por SQL crudo; declarar la
+	// columna como vector + lazyLoad la documenta y genera el DDL correcto sin
+	// cargarla en los SELECT normales.
+	const VECTOR = "VECTOR";
+
 	private static $TEXT_TYPES = null;
 
 	private static $LOB_TYPES = null;
@@ -84,6 +90,7 @@ class PropelTypes {
 	const TIME_NATIVE_TYPE = "int";
 	const TIMESTAMP_NATIVE_TYPE = "int";
 	const BU_TIMESTAMP_NATIVE_TYPE = "string";
+	const VECTOR_NATIVE_TYPE = "string";
 
 	private static $propelToPHPNativeMap = null;
 	private static $propelTypeToCreoleTypeMap = null;
@@ -136,6 +143,7 @@ class PropelTypes {
 			self::$propelToPHPNativeMap[self::TIMESTAMP] = self::TIMESTAMP_NATIVE_TYPE;
 			self::$propelToPHPNativeMap[self::BU_TIMESTAMP] = self::BU_TIMESTAMP_NATIVE_TYPE;
 			self::$propelToPHPNativeMap[self::BOOLEAN] = self::BOOLEAN_NATIVE_TYPE;
+			self::$propelToPHPNativeMap[self::VECTOR] = self::VECTOR_NATIVE_TYPE;
 
 			/*
 			 * Create Propel -> Creole _name_ mappings (not CreoleType:: mappings).
@@ -163,6 +171,7 @@ class PropelTypes {
 			self::$propelTypeToCreoleTypeMap[self::TIME] = self::TIME;
 			self::$propelTypeToCreoleTypeMap[self::TIMESTAMP] = self::TIMESTAMP;
 			self::$propelTypeToCreoleTypeMap[self::BOOLEAN] = self::BOOLEAN;
+			self::$propelTypeToCreoleTypeMap[self::VECTOR] = self::VECTOR;
 
 			// These are pre-epoch dates, which we need to map to String type
 			// since they cannot be properly handled using strtotime() -- or even numeric
@@ -198,6 +207,7 @@ class PropelTypes {
 			self::$creoleToPropelTypeMap[CreoleTypes::TIMESTAMP] = self::TIMESTAMP;
 			self::$creoleToPropelTypeMap[CreoleTypes::BOOLEAN] = self::BOOLEAN;
 			self::$creoleToPropelTypeMap[CreoleTypes::YEAR] = self::INTEGER;
+			self::$creoleToPropelTypeMap[CreoleTypes::VECTOR] = self::VECTOR;
 
 			self::$isInitialized = true;
 		}

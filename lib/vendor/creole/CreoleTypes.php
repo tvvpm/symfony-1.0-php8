@@ -55,7 +55,10 @@ abstract class CreoleTypes {
         
         /** this is "ARRAY" from JDBC types */
         const ARR = 23;
-        
+
+        /** MariaDB VECTOR type (fork Grup Serra: soporte de embeddings). */
+        const VECTOR = 24;
+
         const OTHER = -1;
         
         /** Map of Creole type integers to the setter/getter affix. */
@@ -83,6 +86,7 @@ abstract class CreoleTypes {
                 self::LONGVARBINARY => 'Blob',
                 self::YEAR => 'Int',
                 self::ARR => 'Array',
+                self::VECTOR => 'String', // VEC_ToText/VEC_FromText se gestionan en SQL crudo
                 self::OTHER => '', // get() and set() for unknown
                 );
         
@@ -112,6 +116,7 @@ abstract class CreoleTypes {
                 self::BINARY => 'BINARY',
                 self::LONGVARBINARY => 'LONGVARBINARY',                
                 self::ARR => 'ARR',
+                self::VECTOR => 'VECTOR',
                 self::OTHER => 'OTHER', // string is "raw" return
                 );
         
