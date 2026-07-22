@@ -439,8 +439,22 @@ class sfToolkit
 
       $value = trim(substr($line, $pos + 1));
       $len   = strlen($value);
-      if ($len > 1 && (('"' === $value[0] && '"' === $value[$len - 1]) || ("'" === $value[0] && "'" === $value[$len - 1])))
+      if ($len > 1 && '"' === $value[0] && '"' === $value[$len - 1])
       {
+        // Comillas dobles: se interpretan los escapes, como en cualquier .env.
+        // Permite guardar en una sola línea valores con saltos —una clave PEM,
+        // por ejemplo— igual que hacen los .yml con comillas dobles.
+        $value = strtr(substr($value, 1, -1), array(
+          '\n'  => "\n",
+          '\r'  => "\r",
+          '\t'  => "\t",
+          '\"'  => '"',
+          '\\\\' => '\\',
+        ));
+      }
+      else if ($len > 1 && "'" === $value[0] && "'" === $value[$len - 1])
+      {
+        // Comillas simples: literal, sin interpretar nada.
         $value = substr($value, 1, -1);
       }
 

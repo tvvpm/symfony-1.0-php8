@@ -90,6 +90,13 @@ para web y para CLI: **no hace falta declarar nada en el pool de php-fpm**
 
 - Las variables **ya presentes en el entorno no se pisan**: lo que venga del
   shell, del pool o del systemd unit tiene prioridad sobre el `.env`.
+- **Comillas dobles** interpretan los escapes `\n`, `\r`, `\t`, `\"` y `\\`, lo
+  que permite meter en una línea un valor con saltos (una clave PEM, por
+  ejemplo). **Comillas simples** y sin comillas son literales. Ojo al migrar un
+  valor que ya estaba en un `.yml`: el parser YAML de symfony 1.0 **no**
+  interpreta escapes ni con comillas dobles, así que un `"...\n..."` de un
+  `.yml` vale una barra y una ene, y para reproducirlo tal cual hay que usar
+  comillas simples en el `.env`.
 - Si el fichero no existe o no se puede leer, no pasa nada: simplemente no se
   carga (los proyectos que no lo usen no notan el cambio).
 - Se escribe en `putenv()`, `$_ENV` y `$_SERVER`.
