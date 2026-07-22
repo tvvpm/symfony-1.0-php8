@@ -61,6 +61,8 @@ all:
 - Se consulta `getenv()` y, como respaldo, `$_SERVER` y `$_ENV`: según SAPI y
   `variables_order`, una variable definida en el pool de php-fpm puede aparecer
   sólo en `$_SERVER`.
+- El valor se busca en el entorno del proceso; la forma recomendada de
+  poblarlo es el fichero `.env` del proyecto (ver más abajo).
 - Si la variable no está definida, el valor queda en **cadena vacía**. Para el
   consumidor "sin definir" y "sin valor" son lo mismo, así que no necesita
   conocer esta sintaxis (dejar el placeholder intacto obligaría a cada
@@ -68,16 +70,34 @@ all:
 - El nombre admite `[A-Za-z_][A-Za-z0-9_]*`. Lo que no case con eso se deja tal
   cual.
 
-**Al desplegar**: los procesos CLI (batches, tareas) heredan el entorno del
-shell, pero **php-fpm no**. Para lo que se sirva por web hay que declarar la
-variable en el pool y permitir que pase:
+### El fichero `.env` del proyecto
 
-```ini
-clear_env = no
-env[MI_SERVICIO_API_KEY] = "..."
+Las variables se pueden dejar en un `.env` en la raíz del proyecto
+(`SF_ROOT_DIR`), con el formato habitual:
+
+```
+# comentario
+MI_SERVICIO_API_KEY=valor
+OTRA="valor entre comillas"
+export TAMBIEN_VALE=1
 ```
 
-Cada servidor necesita sus propias variables; no viajan con el código.
+Lo carga `sfCore::bootstrap()`, que es el punto por el que pasan **todos** los
+arranques —front controllers web, batches y la CLI `symfony`— y ocurre antes de
+leer o generar ninguna caché de configuración. Así que la misma definición vale
+para web y para CLI: **no hace falta declarar nada en el pool de php-fpm**
+(`clear_env` / `env[...]`), que era la alternativa antes de esto.
+
+- Las variables **ya presentes en el entorno no se pisan**: lo que venga del
+  shell, del pool o del systemd unit tiene prioridad sobre el `.env`.
+- Si el fichero no existe o no se puede leer, no pasa nada: simplemente no se
+  carga (los proyectos que no lo usen no notan el cambio).
+- Se escribe en `putenv()`, `$_ENV` y `$_SERVER`.
+
+**Al desplegar**: el `.env` no se versiona ni viaja con el código —cada máquina
+tiene el suyo, y hay que provisionarlo aparte. Conviene excluirlo del control de
+versiones y de la sincronización de ficheros, y darle permisos que permitan
+leerlo al usuario que corre php-fpm además del de CLI.
 
 Uso
 ---

@@ -27,6 +27,15 @@ class sfCore
     require_once($sf_symfony_lib_dir.'/util/sfToolkit.class.php');
     require_once($sf_symfony_lib_dir.'/config/sfConfig.class.php');
 
+    // Variables de entorno del proyecto (fork 1.0.31). Va aquí porque es el
+    // punto por el que pasan todos los arranques —web, CLI y batch— y ocurre
+    // antes de leer o generar cualquier caché de configuración, que es donde
+    // se resuelven los placeholders %env(...)%.
+    if (defined('SF_ROOT_DIR'))
+    {
+      sfToolkit::loadEnvironmentFile(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'.env');
+    }
+
     sfCore::initConfiguration($sf_symfony_lib_dir, $sf_symfony_data_dir);
 
     sfCore::initIncludePath();

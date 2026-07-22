@@ -370,6 +370,89 @@ class sfToolkit
   }
 
   /**
+   * Loads a .env file into the process environment.
+   *
+   * Añadido en este fork (1.0.31). Lo llama sfCore::bootstrap() con la raíz
+   * del proyecto, así que vale igual para web y para CLI/batch sin tener que
+   * tocar el pool de php-fpm ni los perfiles de shell: un único fichero, fuera
+   * del repo (añádelo al .gitignore), con las variables del proyecto.
+   *
+   *   # comentario
+   *   ANTHROPIC_API_KEY=sk-ant-...
+   *   OPENAI_API_KEY="sk-..."
+   *
+   * Formato: KEY=VALOR por línea; se admiten comentarios con #, líneas en
+   * blanco, el prefijo `export ` y comillas simples o dobles alrededor del
+   * valor. Todo lo que no case con eso se ignora en silencio (un .env roto no
+   * debe tumbar la aplicación).
+   *
+   * NO pisa lo que ya venga del entorno real: si la variable está definida en
+   * el shell o en el pool de php-fpm, gana ésa. Es la semántica habitual de
+   * dotenv y permite sobreescribir por máquina sin editar el fichero.
+   *
+   * @param  string $file Ruta del fichero .env
+   * @return bool   true si se cargó, false si no existe o no es legible
+   */
+  public static function loadEnvironmentFile($file)
+  {
+    if (!is_file($file) || !is_readable($file))
+    {
+      return false;
+    }
+
+    $lines = @file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    if (false === $lines)
+    {
+      return false;
+    }
+
+    foreach ($lines as $line)
+    {
+      $line = trim($line);
+      if ('' === $line || '#' === $line[0])
+      {
+        continue;
+      }
+
+      if (0 === strpos($line, 'export '))
+      {
+        $line = ltrim(substr($line, 7));
+      }
+
+      $pos = strpos($line, '=');
+      if (false === $pos)
+      {
+        continue;
+      }
+
+      $name = rtrim(substr($line, 0, $pos));
+      if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $name))
+      {
+        continue;
+      }
+
+      // Ya definida en el entorno real: manda ésa.
+      if (false !== getenv($name) || isset($_SERVER[$name]) || isset($_ENV[$name]))
+      {
+        continue;
+      }
+
+      $value = trim(substr($line, $pos + 1));
+      $len   = strlen($value);
+      if ($len > 1 && (('"' === $value[0] && '"' === $value[$len - 1]) || ("'" === $value[0] && "'" === $value[$len - 1])))
+      {
+        $value = substr($value, 1, -1);
+      }
+
+      putenv($name.'='.$value);
+      $_ENV[$name]    = $value;
+      $_SERVER[$name] = $value;
+    }
+
+    return true;
+  }
+
+  /**
    * Replaces %env(NOMBRE)% placeholders with environment variables.
    *
    * Añadido en este fork (1.0.31) para poder sacar secretos (api keys, tokens)
