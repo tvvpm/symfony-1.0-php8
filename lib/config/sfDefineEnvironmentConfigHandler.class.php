@@ -50,7 +50,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
     $data = '';
     foreach ($values as $key => $value)
     {
-      $data .= sprintf("  '%s' => %s,\n", $key, var_export($value, true));
+      $data .= sprintf("  '%s' => %s,\n", $key, self::exportValue($value));
     }
 
     // compile data
@@ -64,6 +64,45 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
     }
 
     return $retval;
+  }
+
+  /**
+   * Exports a value as PHP source for the compiled configuration file.
+   *
+   * Igual que var_export() salvo para las cadenas con placeholders
+   * %env(NOMBRE)% (añadidos en este fork, 1.0.31): en vez del valor ya
+   * resuelto, emite una llamada a sfToolkit::replaceEnvironmentVariables() que
+   * se ejecuta al incluir la caché, en cada petición.
+   *
+   * Resolverlos aquí los congelaría: la caché la genera el primer proceso que
+   * accede tras un clear-cache, y un batch de CLI no tiene el mismo entorno
+   * que php-fpm. El secreto acabaría además escrito en claro en cache/.
+   *
+   * Recorre arrays porque un valor de app.yml puede ser una lista o un hash.
+   *
+   * @param mixed The value to export
+   *
+   * @return string PHP source for that value
+   */
+  protected static function exportValue($value)
+  {
+    if (is_string($value) && false !== strpos($value, '%env('))
+    {
+      return sprintf('sfToolkit::replaceEnvironmentVariables(%s)', var_export($value, true));
+    }
+
+    if (!is_array($value))
+    {
+      return var_export($value, true);
+    }
+
+    $parts = array();
+    foreach ($value as $k => $v)
+    {
+      $parts[] = sprintf('%s => %s', var_export($k, true), self::exportValue($v));
+    }
+
+    return 'array('.implode(', ', $parts).')';
   }
 
   /**

@@ -353,12 +353,85 @@ class sfToolkit
   /**
    * Replaces constant identifiers in a scalar value.
    *
+   * Los placeholders %env(NOMBRE)% NO se tocan aquí: los resuelve el fichero
+   * de caché generado, en cada petición y contra el entorno de su propio
+   * proceso (ver sfDefineEnvironmentConfigHandler::exportValue y
+   * replaceEnvironmentVariables). Resolverlos en este punto los congelaría en
+   * la caché compilada. La regex de abajo no los estropea: busca la clave
+   * 'env(nombre)' en sfConfig, no la encuentra y devuelve el placeholder tal
+   * cual, que es justo lo que hace falta.
+   *
    * @param string the value to perform the replacement on
    * @return string the value with substitutions made
    */
   public static function replaceConstants($value)
   {
     return is_string($value) ? preg_replace_callback('/%(.+?)%/', function($v) { return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : "%{$v[1]}%";}, $value) : $value;
+  }
+
+  /**
+   * Replaces %env(NOMBRE)% placeholders with environment variables.
+   *
+   * Añadido en este fork (1.0.31) para poder sacar secretos (api keys, tokens)
+   * de los .yml versionados: el fichero lleva el placeholder y el valor real
+   * vive en el entorno del proceso, fuera del repo.
+   *
+   *   api_key: '%env(ANTHROPIC_API_KEY)%'
+   *
+   * La llama el fichero de configuración compilado, en cada petición (ver
+   * sfDefineEnvironmentConfigHandler::exportValue). Así el secreto nunca se
+   * escribe en la caché y cada proceso resuelve contra su propio entorno; si
+   * se resolviera al compilar, el valor quedaría congelado según qué proceso
+   * generó la caché primero (un batch de CLI y php-fpm no tienen el mismo
+   * entorno). El coste medido es ~0,5 us por clave y petición.
+   *
+   * Si la variable no está definida se sustituye por cadena vacía: para el
+   * consumidor "no hay valor" y "variable sin definir" son lo mismo, y así no
+   * tiene que saber nada de esta sintaxis (dejar el placeholder intacto
+   * obligaría a cada consumidor a reconocerlo para no tomarlo por un valor
+   * real). Es el mismo criterio con el que symfony trata una clave ausente.
+   *
+   * OJO con el despliegue: los procesos CLI (batch, tareas) heredan el entorno
+   * del shell, pero php-fpm NO — hay que declarar la variable en el pool
+   * (env[NOMBRE] = ... con clear_env = no) en cada servidor que sirva web.
+   *
+   * Se consulta getenv() y, como respaldo, $_SERVER/$_ENV: según SAPI y
+   * variables_order, una variable puesta por el pool de php-fpm puede aparecer
+   * solo en $_SERVER.
+   *
+   * @param string the value to perform the replacement on
+   * @return string the value with substitutions made
+   */
+  public static function replaceEnvironmentVariables($value)
+  {
+    if (!is_string($value) || false === strpos($value, '%env('))
+    {
+      return $value;
+    }
+
+    return preg_replace_callback('/%env\(([A-Za-z_][A-Za-z0-9_]*)\)%/', function($v)
+    {
+      $name = $v[1];
+
+      $env = getenv($name);
+      if (false !== $env && '' !== $env)
+      {
+        return $env;
+      }
+
+      if (isset($_SERVER[$name]) && '' !== $_SERVER[$name])
+      {
+        return $_SERVER[$name];
+      }
+
+      if (isset($_ENV[$name]) && '' !== $_ENV[$name])
+      {
+        return $_ENV[$name];
+      }
+
+      // No definida: equivale a no tener valor.
+      return '';
+    }, $value);
   }
 
   /**
