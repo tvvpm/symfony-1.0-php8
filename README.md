@@ -88,8 +88,28 @@ leer o generar ninguna caché de configuración. Así que la misma definición v
 para web y para CLI: **no hace falta declarar nada en el pool de php-fpm**
 (`clear_env` / `env[...]`), que era la alternativa antes de esto.
 
+#### Cascada por app
+
+Además del `.env` de la raíz (variables comunes a todas las apps), cada app
+puede tener el suyo propio en `apps/<app>/.env`, con lo que solo necesita ella.
+Mismo criterio que la cascada de `app.yml`: lo específico se añade encima de lo
+común y puede sobreescribirlo.
+
+`sfCore::bootstrap()` carga primero el `.env` de la raíz y luego, si `SF_APP`
+está definida (lo está en cualquier arranque normal: se define antes de
+requerir el `config.php` de la app), el de `apps/<app>/.env` — sus valores
+ganan si coinciden con los de la raíz. Ninguno de los dos pisa lo que ya
+viniera del entorno real del proceso, que sigue mandando por encima de
+cualquier `.env`.
+
+Internamente esto usa `sfToolkit::loadEnvironmentFiles(array $files)`, que
+fusiona los ficheros (el último de la lista gana) antes de aplicar el
+resultado al entorno. Llamar dos veces a `loadEnvironmentFile()` (singular)
+para el mismo efecto **no funciona**: la segunda llamada vería lo que puso la
+primera como si fuera entorno real y nunca lo sobreescribiría.
+
 - Las variables **ya presentes en el entorno no se pisan**: lo que venga del
-  shell, del pool o del systemd unit tiene prioridad sobre el `.env`.
+  shell, del pool o del systemd unit tiene prioridad sobre cualquier `.env`.
 - **Comillas dobles** interpretan los escapes `\n`, `\r`, `\t`, `\"` y `\\`, lo
   que permite meter en una línea un valor con saltos (una clave PEM, por
   ejemplo). **Comillas simples** y sin comillas son literales. Ojo al migrar un

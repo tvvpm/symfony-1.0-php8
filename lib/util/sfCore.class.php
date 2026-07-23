@@ -27,13 +27,26 @@ class sfCore
     require_once($sf_symfony_lib_dir.'/util/sfToolkit.class.php');
     require_once($sf_symfony_lib_dir.'/config/sfConfig.class.php');
 
-    // Variables de entorno del proyecto (fork 1.0.31). Va aquí porque es el
-    // punto por el que pasan todos los arranques —web, CLI y batch— y ocurre
-    // antes de leer o generar cualquier caché de configuración, que es donde
-    // se resuelven los placeholders %env(...)%.
+    // Variables de entorno del proyecto (fork 1.0.31, con cascada por app). Va
+    // aquí porque es el punto por el que pasan todos los arranques —web, CLI
+    // y batch— y ocurre antes de leer o generar cualquier caché de
+    // configuración, que es donde se resuelven los placeholders %env(...)%.
+    //
+    // Mismo criterio que la cascada de app.yml: el .env de la raíz trae lo
+    // común a todas las apps; el .env de apps/<app>/ (si existe) trae lo
+    // propio de esa app y puede sobreescribir lo común. SF_APP ya está
+    // definida en este punto en cualquier arranque normal (se define antes de
+    // requerir el config.php de la app); si no lo está —p.ej. la propia
+    // herramienta symfony operando sobre varias apps a la vez— solo se carga
+    // el .env de la raíz.
     if (defined('SF_ROOT_DIR'))
     {
-      sfToolkit::loadEnvironmentFile(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'.env');
+      $files = array(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'.env');
+      if (defined('SF_APP'))
+      {
+        $files[] = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'.env';
+      }
+      sfToolkit::loadEnvironmentFiles($files);
     }
 
     sfCore::initConfiguration($sf_symfony_lib_dir, $sf_symfony_data_dir);

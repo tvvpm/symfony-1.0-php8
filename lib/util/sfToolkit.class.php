@@ -390,10 +390,81 @@ class sfToolkit
    * el shell o en el pool de php-fpm, gana ésa. Es la semántica habitual de
    * dotenv y permite sobreescribir por máquina sin editar el fichero.
    *
+   * Para cargar varios ficheros en cascada (con prioridad entre ellos, no solo
+   * frente al entorno real) usar {@link loadEnvironmentFiles()} — llamar a
+   * este método varias veces no sirve: la segunda llamada vería lo que puso
+   * la primera como si fuera entorno real y nunca lo sobreescribiría.
+   *
    * @param  string $file Ruta del fichero .env
    * @return bool   true si se cargó, false si no existe o no es legible
    */
   public static function loadEnvironmentFile($file)
+  {
+    $vars = self::parseEnvironmentFile($file);
+    if (false === $vars)
+    {
+      return false;
+    }
+
+    self::applyEnvironmentVariables($vars);
+
+    return true;
+  }
+
+  /**
+   * Carga varios .env en cascada: cada fichero pisa los valores del anterior,
+   * pero ninguno pisa lo que ya viniera del entorno real del proceso (shell,
+   * pool de php-fpm, unit de systemd) — esa comprobación se hace una sola vez,
+   * al aplicar el resultado ya fusionado, no fichero a fichero.
+   *
+   * Pensado para un .env de proyecto (variables comunes a todas las apps) más
+   * un .env por app (las suyas propias), mismo criterio que la cascada de
+   * app.yml: lo específico se añade sobre lo común y puede sobreescribirlo.
+   *
+   *   sfToolkit::loadEnvironmentFiles(array(
+   *     SF_ROOT_DIR.'/.env',                       // común
+   *     SF_ROOT_DIR.'/apps/'.SF_APP.'/.env',        // propio de esta app
+   *   ));
+   *
+   * Ficheros que no existen se ignoran en silencio (para que un proyecto sin
+   * .env por app no note nada).
+   *
+   * @param  string[] $files Rutas en orden de prioridad creciente (el último gana)
+   * @return bool     true si se cargó al menos uno
+   */
+  public static function loadEnvironmentFiles(array $files)
+  {
+    $merged  = array();
+    $cargado = false;
+
+    foreach ($files as $file)
+    {
+      $vars = self::parseEnvironmentFile($file);
+      if (false === $vars)
+      {
+        continue;
+      }
+
+      $cargado = true;
+      $merged  = array_merge($merged, $vars);
+    }
+
+    if ($cargado)
+    {
+      self::applyEnvironmentVariables($merged);
+    }
+
+    return $cargado;
+  }
+
+  /**
+   * Parsea un .env a un array asociativo, sin tocar el entorno del proceso.
+   * Ver {@link loadEnvironmentFile()} para el formato admitido.
+   *
+   * @param  string $file
+   * @return array|false Array nombre => valor, o false si no existe/no es legible
+   */
+  protected static function parseEnvironmentFile($file)
   {
     if (!is_file($file) || !is_readable($file))
     {
@@ -405,6 +476,8 @@ class sfToolkit
     {
       return false;
     }
+
+    $vars = array();
 
     foreach ($lines as $line)
     {
@@ -431,12 +504,6 @@ class sfToolkit
         continue;
       }
 
-      // Ya definida en el entorno real: manda ésa.
-      if (false !== getenv($name) || isset($_SERVER[$name]) || isset($_ENV[$name]))
-      {
-        continue;
-      }
-
       $value = trim(substr($line, $pos + 1));
       $len   = strlen($value);
       if ($len > 1 && '"' === $value[0] && '"' === $value[$len - 1])
@@ -458,12 +525,32 @@ class sfToolkit
         $value = substr($value, 1, -1);
       }
 
+      $vars[$name] = $value;
+    }
+
+    return $vars;
+  }
+
+  /**
+   * Vuelca un array nombre => valor al entorno del proceso (getenv/$_ENV/
+   * $_SERVER), sin pisar ninguna variable que ya viniera del entorno real
+   * (shell, pool de php-fpm, unit de systemd) antes de llamar a este método.
+   *
+   * @param array $vars
+   */
+  protected static function applyEnvironmentVariables(array $vars)
+  {
+    foreach ($vars as $name => $value)
+    {
+      if (false !== getenv($name) || isset($_SERVER[$name]) || isset($_ENV[$name]))
+      {
+        continue;
+      }
+
       putenv($name.'='.$value);
       $_ENV[$name]    = $value;
       $_SERVER[$name] = $value;
     }
-
-    return true;
   }
 
   /**
