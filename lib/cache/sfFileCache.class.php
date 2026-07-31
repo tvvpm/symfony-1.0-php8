@@ -474,7 +474,7 @@ class sfFileCache extends sfCache
   protected function read($path, $file)
   {
     $fp = @fopen($path.$file, "rb");
-    if ($this->fileLocking)
+    if ($this->fileLocking && $fp)
     {
       @flock($fp, LOCK_SH);
     }
