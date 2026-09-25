@@ -4,7 +4,8 @@
   'multipart' => true,
 <?php foreach ($this->getColumnCategories('edit.display') as $category): ?>
 <?php foreach ($this->getColumns('edit.display', $category) as $name => $column): ?>
-<?php if (false !== strpos($this->getParameterValue('edit.fields.'.$column->getName().'.type'), 'admin_double_list')): ?>
+<?php $edit_field_type = $this->getParameterValue('edit.fields.'.$column->getName().'.type') ?>
+<?php if (null !== $edit_field_type && false !== strpos($edit_field_type, 'admin_double_list')): ?>
   'onsubmit'  => 'double_list_submit(); return true;'
 <?php break 2; ?>
 <?php endif; ?>
