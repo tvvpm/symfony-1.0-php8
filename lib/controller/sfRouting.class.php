@@ -309,7 +309,7 @@ class sfRouting
 
       foreach ($elements as $element)
       {
-        if (preg_match('/^:(.+)$/', $element, $r))
+        if (preg_match('/^:([A-Za-z0-9_]+)$/', $element, $r))
         {
           $element = $r[1];
 
@@ -338,6 +338,50 @@ class sfRouting
         elseif (preg_match('/^\*$/', $element, $r))
         {
           $parsed[] = '(?:\/(.*))?';
+        }
+        elseif (strpos($element, ':') !== false)
+        {
+          // El elemento mezcla literales y una o mas variables dentro del
+          // mismo segmento, p.ej. ':id.:format' (una sola variable que
+          // ocupe TODO el elemento ya se resuelve en la rama de arriba;
+          // aqui solo caen los casos mixtos). Cada ":var" para de comer en
+          // el separador literal que le sigue (backtracking de PCRE), o usa
+          // el requirement explicito si existe.
+          $subparts = preg_split('/(:[A-Za-z0-9_]+)/', $element, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+          $element_regex = '';
+          foreach ($subparts as $part)
+          {
+            if (preg_match('/^:([A-Za-z0-9_]+)$/', $part, $pm))
+            {
+              $varname = $pm[1];
+              if (isset($requirements[$varname]))
+              {
+                $regex = $requirements[$varname];
+                if (0 === strpos($regex, '^'))
+                {
+                  $regex = substr($regex, 1);
+                }
+                if (strlen($regex) - 1 === strpos($regex, '$'))
+                {
+                  $regex = substr($regex, 0, -1);
+                }
+              }
+              else
+              {
+                $regex = '[^\/]+';
+              }
+
+              $element_regex .= '('.$regex.')';
+              $names[] = $varname;
+              $names_hash[$varname] = 1;
+            }
+            else
+            {
+              $element_regex .= preg_quote($part, '#');
+            }
+          }
+
+          $parsed[] = '(?:\/'.$element_regex.')?';
         }
         else
         {
@@ -458,7 +502,10 @@ class sfRouting
 
     $params = sfToolkit::arrayDeepMerge($defaults, $params);
 
-    $real_url = preg_replace_callback('/\:([^\/]+)/', function($m) use($params) { return urlencode($params[$m[1]]); }, $url);
+    // [A-Za-z0-9_]+ (no [^\/]+): un elemento puede llevar mas de una
+    // variable separadas por un literal, p.ej. ':id.:format' -- el nombre
+    // de variable para en el separador en vez de comerselo.
+    $real_url = preg_replace_callback('/\:([A-Za-z0-9_]+)/', function($m) use($params) { return urlencode($params[$m[1]]); }, $url);
 
     // we add all other params if *
     if (strpos($real_url, '*'))
