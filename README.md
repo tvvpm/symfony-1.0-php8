@@ -27,6 +27,7 @@ Versiones (tags)
   v1.0.29   compatibilidad PHP 8.5
   v1.0.30   correcciones PHP 8 detectadas validando la aplicación real
   v1.0.31   secretos fuera del repo: sintaxis %env(VAR)% en los .yml (versión activa)
+  v1.0.32   sfRouting: variables múltiples en un mismo segmento de ruta (:id.:format)
 
 El linaje 1.0.21 (repo aparte) es la base pre-migración del symfony 1.0 original y
 no forma parte de esta historia.
