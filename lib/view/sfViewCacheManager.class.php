@@ -188,9 +188,59 @@ class sfViewCacheManager
   {
     if (!isset($this->loaded[$moduleName]))
     {
-      require(sfConfigCache::getInstance()->checkConfig(sfConfig::get('sf_app_module_dir_name').'/'.$moduleName.'/'.sfConfig::get('sf_app_module_config_dir_name').'/cache.yml'));
+      $configPath = sfConfig::get('sf_app_module_dir_name').'/'.$moduleName.'/'.sfConfig::get('sf_app_module_config_dir_name').'/cache.yml';
+
+      // don't compile a config cache file for modules that don't exist (bot URLs: /123.zip, /not%EDcies...):
+      // the module name comes from the URL and every new one would leave a file in the config cache
+      if (!is_readable(sfConfigCache::getInstance()->getCacheName($configPath)) && !self::moduleExists($moduleName))
+      {
+        $this->loaded[$moduleName] = true;
+
+        return;
+      }
+
+      require(sfConfigCache::getInstance()->checkConfig($configPath));
       $this->loaded[$moduleName] = true;
     }
+  }
+
+  /**
+   * Checks whether a module exists in any module directory (application, plugins or core).
+   * 'global' (partials in the application templates/ dir) always exists.
+   *
+   * @param string Module name
+   *
+   * @return boolean
+   */
+  protected static function moduleExists($moduleName)
+  {
+    if ('global' == $moduleName)
+    {
+      return true;
+    }
+
+    // a module name ends up in a PHP class name (<module>Actions): anything else is not a module
+    // (also keeps path separators, '..' and glob wildcards out of the checks below)
+    if (!preg_match('/^[a-zA-Z0-9_]+$/', $moduleName))
+    {
+      return false;
+    }
+
+    // same places as sfLoader::getControllerDirs(), but checking the module dir itself
+    // (not <module>/actions) so template-only modules (partials) count as existing too
+    $dirs = array_keys(sfConfig::get('sf_module_dirs', array()));
+    $dirs[] = sfConfig::get('sf_app_module_dir');
+    $dirs[] = sfConfig::get('sf_symfony_data_dir').'/modules';
+
+    foreach ($dirs as $dir)
+    {
+      if (is_dir($dir.'/'.$moduleName))
+      {
+        return true;
+      }
+    }
+
+    return (boolean) glob(sfConfig::get('sf_plugins_dir').'/*/modules/'.$moduleName, GLOB_ONLYDIR);
   }
 
   /**
